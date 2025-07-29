@@ -6,7 +6,6 @@
     <title>GitHub Profiles - Batman Theme</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* Keep all your existing Batman theme CSS styles from the previous code */
         :root {
             --batman-black: #080808;
             --pure-black: #000000;
@@ -30,7 +29,7 @@
             overflow-x: hidden;
         }
 
-        /* Batman Loading Animation - Keep all previous styles */
+        /* Batman Loading Animation */
         .batman-loader {
             position: fixed;
             top: 0;
@@ -46,7 +45,115 @@
             transition: opacity 0.5s ease;
         }
 
-        /* Keep all other existing styles... */
+        .batman-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .bat-symbol {
+            position: relative;
+            width: 100px;
+            height: 60px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .wing {
+            position: absolute;
+            background: var(--batman-red);
+            border-radius: 50px 50px 0 0;
+            animation: flap 1.5s infinite alternate ease-in-out;
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
+        }
+
+        .left-wing {
+            left: 0;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            transform-origin: bottom right;
+        }
+
+        .right-wing {
+            right: 0;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            transform-origin: bottom left;
+        }
+
+        .body {
+            position: absolute;
+            left: 50%;
+            top: 30px;
+            width: 20px;
+            height: 30px;
+            background: var(--batman-red);
+            border-radius: 0 0 10px 10px;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(220, 20, 60, 0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes flap {
+            0% { transform: rotateZ(0deg); }
+            100% { transform: rotateZ(-15deg); }
+        }
+
+        .loading-text {
+            color: var(--batman-red);
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            animation: glow 2s infinite alternate;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes glow {
+            0% { 
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
+            }
+            100% { 
+                text-shadow: 0 0 20px var(--batman-red), 2px 2px 4px rgba(0, 0, 0, 0.8); 
+            }
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 4px;
+            background: var(--dark-gray);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+            border: 1px solid var(--batman-red);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--batman-red), var(--deep-red));
+            border-radius: 2px;
+            animation: loading 3s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--batman-red);
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* Main Content Styles */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -69,9 +176,26 @@
             text-transform: uppercase;
         }
 
+        .header p {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            font-style: italic;
+        }
+
         .controls {
             text-align: center;
             margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
         }
 
         .search-box {
@@ -81,14 +205,18 @@
             padding: 12px 20px;
             border-radius: 6px;
             font-size: 16px;
-            margin-right: 10px;
             width: 300px;
+            transition: all 0.3s ease;
         }
 
         .search-box:focus {
             outline: none;
             border-color: var(--deep-red);
             box-shadow: 0 0 10px rgba(220, 20, 60, 0.3);
+        }
+
+        .search-box::placeholder {
+            color: var(--dark-gray);
         }
 
         .btn-batman {
@@ -105,12 +233,20 @@
             text-decoration: none;
             display: inline-block;
             letter-spacing: 1px;
-            margin: 5px;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-batman:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(220, 20, 60, 0.5);
+            background: linear-gradient(135deg, var(--deep-red), var(--batman-red));
+        }
+
+        .btn-batman:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .profiles-grid {
@@ -128,6 +264,24 @@
             text-align: center;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(220, 20, 60, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .profile-card:hover::before {
+            left: 100%;
         }
 
         .profile-card:hover {
@@ -143,6 +297,12 @@
             border: 3px solid var(--batman-red);
             margin: 0 auto 20px;
             display: block;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover .profile-avatar {
+            border-color: var(--deep-red);
+            box-shadow: 0 0 20px rgba(220, 20, 60, 0.6);
         }
 
         .profile-username {
@@ -150,6 +310,7 @@
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
 
         .profile-description {
@@ -158,6 +319,31 @@
             margin-bottom: 20px;
             line-height: 1.4;
             min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            color: var(--batman-red);
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--dark-gray);
+            font-size: 0.8rem;
         }
 
         .loading-message {
@@ -165,6 +351,7 @@
             color: var(--batman-red);
             font-size: 1.2rem;
             margin: 40px 0;
+            animation: pulse 2s infinite;
         }
 
         .error-message {
@@ -172,6 +359,84 @@
             color: var(--deep-red);
             font-size: 1.1rem;
             margin: 20px 0;
+            padding: 15px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid var(--deep-red);
+            border-radius: 6px;
+        }
+
+        .success-message {
+            text-align: center;
+            color: var(--batman-red);
+            font-size: 1rem;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(220, 20, 60, 0.1);
+            border: 1px solid var(--batman-red);
+            border-radius: 6px;
+        }
+
+        .pagination {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px 0;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .footer p {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .profiles-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .profile-card {
+                padding: 20px;
+            }
+            
+            .batman-loader .loading-text {
+                font-size: 18px;
+            }
+            
+            .progress-bar {
+                width: 250px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Ripple effect */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -194,73 +459,140 @@
         <div class="header">
             <h1>GitHub Profiles</h1>
             <p>Discover real GitHub profiles and repositories</p>
+            <div class="subtitle">Batman Theme Edition</div>
         </div>
 
         <div class="controls">
             <input type="text" id="searchInput" class="search-box" placeholder="Search GitHub username...">
-            <button class="btn-batman" onclick="searchUser()">Search User</button>
-            <button class="btn-batman" onclick="loadRandomUsers()">Load Random Users</button>
-            <button class="btn-batman" onclick="loadAllUsers()">Load All Users</button>
+            <button class="btn-batman" onclick="searchUser()" id="searchBtn">Search User</button>
+            <button class="btn-batman" onclick="loadPopularUsers()" id="popularBtn">Popular Users</button>
+            <button class="btn-batman" onclick="loadRandomUsers()" id="randomBtn">Random Users</button>
+            <button class="btn-batman" onclick="loadMoreUsers()" id="loadMoreBtn">Load More</button>
         </div>
 
         <div id="loadingMessage" class="loading-message" style="display: none;">
             Fetching users from GitHub API...
         </div>
 
+        <div id="successMessage" class="success-message" style="display: none;"></div>
         <div id="errorMessage" class="error-message" style="display: none;"></div>
 
         <div class="profiles-grid" id="profilesGrid">
             <!-- Users will be loaded here dynamically -->
         </div>
+
+        <div class="pagination" id="pagination" style="display: none;">
+            <button class="btn-batman" onclick="previousPage()" id="prevBtn" disabled>Previous</button>
+            <span id="pageInfo" style="color: var(--light-gray); margin: 0 20px;">Page 1</span>
+            <button class="btn-batman" onclick="nextPage()" id="nextBtn">Next</button>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 GitHub Profiles Explorer - Batman Theme Edition</p>
+        </div>
     </div>
 
     <script>
+        // Global variables
         let currentUsers = [];
         let currentPage = 1;
+        let isLoading = false;
+        let totalPages = 1;
 
-        // API Functions
-        async function fetchAllUsers(page = 1, perPage = 30) {
+        // Popular GitHub users for fallback
+        const POPULAR_USERS = [
+            'torvalds', 'gaearon', 'addyosmani', 'sindresorhus', 'tj', 'defunkt',
+            'octocat', 'mojombo', 'jeresig', 'fabpot', 'taylorotwell', 'laracasts'
+        ];
+
+        // GitHub API base URL
+        const GITHUB_API_BASE = 'https://api.github.com';
+
+        // Enhanced fetch function with multiple fallback strategies
+        async function fetchWithFallback(url) {
+            const corsProxies = [
+                'https://api.allorigins.win/get?url=',
+                'https://corsproxy.io/?',
+                'https://cors-anywhere.herokuapp.com/'
+            ];
+
             try {
-                const response = await fetch(`https://api.github.com/users?page=${page}&per_page=${perPage}`);
-                if (response.status === 200) {
+                // Try direct API call first
+                const response = await fetch(url);
+                if (response.ok) {
                     return await response.json();
                 }
                 throw new Error(`HTTP ${response.status}`);
             } catch (error) {
+                console.log('Direct API failed, trying proxies...');
+                
+                // Try CORS proxies
+                for (const proxy of corsProxies) {
+                    try {
+                        const proxyUrl = proxy + encodeURIComponent(url);
+                        const response = await fetch(proxyUrl);
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            // Handle different proxy response formats
+                            return data.contents ? JSON.parse(data.contents) : data;
+                        }
+                    } catch (proxyError) {
+                        console.log(`Proxy ${proxy} failed:`, proxyError);
+                        continue;
+                    }
+                }
+                
+                throw new Error('All API methods failed');
+            }
+        }
+
+        // API Functions
+        async function fetchAllUsers(page = 1, perPage = 30) {
+            try {
+                const url = `${GITHUB_API_BASE}/users?page=${page}&per_page=${perPage}`;
+                return await fetchWithFallback(url);
+            } catch (error) {
                 console.error('Error fetching users:', error);
-                showError('Failed to fetch users from GitHub API');
-                return [];
+                throw error;
             }
         }
 
         async function fetchUserDetails(username) {
             try {
-                const response = await fetch(`https://api.github.com/users/${username}`);
-                if (response.status === 200) {
-                    return await response.json();
-                } else if (response.status === 404) {
-                    showError(`User "${username}" not found`);
-                    return null;
-                }
-                throw new Error(`HTTP ${response.status}`);
+                const url = `${GITHUB_API_BASE}/users/${username}`;
+                return await fetchWithFallback(url);
             } catch (error) {
-                console.error('Error fetching user details:', error);
-                showError('Failed to fetch user details');
+                console.error(`Error fetching user ${username}:`, error);
                 return null;
             }
         }
 
         async function fetchMultipleUsers(usernames) {
-            showLoading(true);
             const promises = usernames.map(username => fetchUserDetails(username));
             const results = await Promise.all(promises);
-            showLoading(false);
             return results.filter(user => user !== null);
         }
 
         // UI Functions
         function showLoading(show) {
             document.getElementById('loadingMessage').style.display = show ? 'block' : 'none';
+            isLoading = show;
+            
+            // Disable buttons during loading
+            const buttons = ['searchBtn', 'popularBtn', 'randomBtn', 'loadMoreBtn'];
+            buttons.forEach(btnId => {
+                document.getElementById(btnId).disabled = show;
+            });
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
         }
 
         function showError(message) {
@@ -276,6 +608,11 @@
             const grid = document.getElementById('profilesGrid');
             grid.innerHTML = '';
 
+            if (users.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: var(--light-gray); grid-column: 1 / -1;">No users found. Try a different search or load random users.</p>';
+                return;
+            }
+
             users.forEach(user => {
                 const userCard = createUserCard(user);
                 grid.appendChild(userCard);
@@ -286,43 +623,124 @@
             const card = document.createElement('div');
             card.className = 'profile-card';
             
-            const bio = user.bio || user.description || 'No bio available';
+            const bio = user.bio || 'No bio available';
             const name = user.name || user.login;
+            const publicRepos = user.public_repos || 0;
+            const followers = user.followers || 0;
+            const following = user.following || 0;
             
             card.innerHTML = `
-                <img src="${user.avatar_url}" alt="${user.login}" class="profile-avatar">
+                <img src="${user.avatar_url}" alt="${user.login}" class="profile-avatar" loading="lazy">
                 <div class="profile-username">@${user.login}</div>
+                ${user.name ? `<div style="color: var(--light-gray); margin-bottom: 10px;">${user.name}</div>` : ''}
                 <div class="profile-description">${bio}</div>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-number">${followers}</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">${following}</span>
+                        <span class="stat-label">Following</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">${publicRepos}</span>
+                        <span class="stat-label">Repos</span>
+                    </div>
+                </div>
                 <a href="${user.html_url}" target="_blank" class="btn-batman">View Profile</a>
             `;
             
             return card;
         }
 
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            const pageInfo = document.getElementById('pageInfo');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (totalPages > 1) {
+                pagination.style.display = 'block';
+                pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+            } else {
+                pagination.style.display = 'none';
+            }
+        }
+
         // Main Functions
         async function loadAllUsers() {
-            showLoading(true);
-            const users = await fetchAllUsers(currentPage, 30);
-            showLoading(false);
+            if (isLoading) return;
             
-            if (users.length > 0) {
-                currentUsers = users;
-                displayUsers(users);
-                currentPage++;
+            showLoading(true);
+            try {
+                const users = await fetchAllUsers(currentPage, 30);
+                if (users.length > 0) {
+                    currentUsers = users;
+                    displayUsers(users);
+                    showSuccess(`Loaded ${users.length} users`);
+                    totalPages = Math.min(10, Math.ceil(1000 / 30)); // GitHub API limit
+                    updatePagination();
+                } else {
+                    showError('No users found');
+                }
+            } catch (error) {
+                showError('Failed to load users. Trying fallback...');
+                await loadPopularUsers();
+            } finally {
+                showLoading(false);
             }
         }
 
         async function loadRandomUsers() {
-            showLoading(true);
-            // Get random users by fetching from a random page
-            const randomPage = Math.floor(Math.random() * 100) + 1;
-            const users = await fetchAllUsers(randomPage, 20);
-            showLoading(false);
+            if (isLoading) return;
             
-            if (users.length > 0) {
-                currentUsers = users;
-                displayUsers(users);
+            showLoading(true);
+            try {
+                const randomPage = Math.floor(Math.random() * 100) + 1;
+                const users = await fetchAllUsers(randomPage, 20);
+                
+                if (users.length > 0) {
+                    currentUsers = users;
+                    displayUsers(users);
+                    showSuccess(`Loaded ${users.length} random users`);
+                } else {
+                    throw new Error('No users returned');
+                }
+            } catch (error) {
+                showError('Failed to load random users. Loading popular users instead...');
+                await loadPopularUsers();
+            } finally {
+                showLoading(false);
             }
+        }
+
+        async function loadPopularUsers() {
+            if (isLoading) return;
+            
+            showLoading(true);
+            try {
+                const users = await fetchMultipleUsers(POPULAR_USERS);
+                if (users.length > 0) {
+                    currentUsers = users;
+                    displayUsers(users);
+                    showSuccess(`Loaded ${users.length} popular users`);
+                } else {
+                    showError('Failed to load any users');
+                }
+            } catch (error) {
+                showError('Failed to load popular users');
+                console.error('Popular users error:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function loadMoreUsers() {
+            currentPage++;
+            await loadAllUsers();
         }
 
         async function searchUser() {
@@ -332,14 +750,38 @@
                 return;
             }
 
+            if (isLoading) return;
+            
             showLoading(true);
-            const user = await fetchUserDetails(username);
-            showLoading(false);
+            try {
+                const user = await fetchUserDetails(username);
+                if (user) {
+                    currentUsers = [user];
+                    displayUsers([user]);
+                    document.getElementById('searchInput').value = '';
+                    showSuccess(`Found user: @${user.login}`);
+                    document.getElementById('pagination').style.display = 'none';
+                } else {
+                    showError(`User "${username}" not found`);
+                }
+            } catch (error) {
+                showError(`Failed to search for "${username}"`);
+            } finally {
+                showLoading(false);
+            }
+        }
 
-            if (user) {
-                currentUsers = [user];
-                displayUsers([user]);
-                document.getElementById('searchInput').value = '';
+        async function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                await loadAllUsers();
+            }
+        }
+
+        async function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                await loadAllUsers();
             }
         }
 
@@ -350,18 +792,65 @@
             }
         });
 
-        // Loading animation control
+        // Add ripple effect to buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.btn-batman');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.disabled) return;
+                    
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s linear;
+                        pointer-events: none;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+
+        // Loading animation control and initialization
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
+                loader.classList.add('hidden');
                 
                 setTimeout(function() {
                     loader.style.display = 'none';
-                    // Load initial users
-                    loadRandomUsers();
+                    // Load initial popular users
+                    loadPopularUsers().catch(error => {
+                        console.error('Failed to load initial users:', error);
+                        showError('Welcome! Use the buttons above to fetch GitHub users.');
+                    });
                 }, 500);
             }, 2000);
+        });
+
+        // Add some error handling for network issues
+        window.addEventListener('online', function() {
+            showSuccess('Connection restored!');
+        });
+
+        window.addEventListener('offline', function() {
+            showError('No internet connection. Some features may not work.');
         });
     </script>
 </body>
