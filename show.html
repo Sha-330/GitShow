@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Profile Viewer</title>
+    <title>GitHub Profiles - Batman Theme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* Keep all your existing Batman theme CSS styles from the previous code */
+        :root {
+            --batman-black: #080808;
+            --pure-black: #000000;
+            --batman-red: #DC143C;
+            --dark-gray: #515155;
+            --light-gray: #7F8086;
+            --deep-red: #8B0000;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,738 +23,346 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--batman-black) 0%, var(--pure-black) 100%);
+            color: var(--light-gray);
+            font-family: 'Roboto', 'Arial', sans-serif;
             min-height: 100vh;
-            padding: 20px;
+            overflow-x: hidden;
         }
 
+        /* Batman Loading Animation - Keep all previous styles */
+        .batman-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--batman-black) 0%, var(--pure-black) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Keep all other existing styles... */
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
-            color: white;
+            padding: 40px 0;
         }
 
         .header h1 {
+            color: var(--batman-red);
             font-size: 3rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        .search-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .cors-note {
-            background: linear-gradient(45deg, #ff9a9e, #fecfef);
-            color: #333;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .cors-note strong {
-            color: #d63384;
-        }
-
-        .cors-note a {
-            color: #0d6efd;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .cors-note a:hover {
-            text-decoration: underline;
+        .controls {
+            text-align: center;
+            margin: 30px 0;
         }
 
         .search-box {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        #usernameInput {
-            flex: 1;
-            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--batman-red);
+            color: var(--light-gray);
+            padding: 12px 20px;
+            border-radius: 6px;
             font-size: 16px;
-            border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            margin-right: 10px;
+            width: 300px;
         }
 
-        #usernameInput:focus {
+        .search-box:focus {
             outline: none;
-            box-shadow: 0 0 20px rgba(255,255,255,0.5);
-            transform: translateY(-2px);
+            border-color: var(--deep-red);
+            box-shadow: 0 0 10px rgba(220, 20, 60, 0.3);
         }
 
-        #searchBtn {
-            padding: 15px 30px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+        .btn-batman {
+            background: linear-gradient(135deg, var(--batman-red), var(--deep-red));
             color: white;
             border: none;
-            border-radius: 25px;
-            font-size: 16px;
+            padding: 12px 24px;
+            border-radius: 6px;
             font-weight: bold;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(238, 90, 111, 0.4);
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 1px;
+            margin: 5px;
         }
 
-        #searchBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(238, 90, 111, 0.6);
-        }
-
-        #searchBtn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        #directLinkBtn {
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-        }
-
-        #directLinkBtn:hover {
+        .btn-batman:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 6px 25px rgba(220, 20, 60, 0.5);
         }
 
-        .profile-container {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .profile-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--batman-red);
+            border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            animation: fadeInUp 0.6s ease;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(220, 20, 60, 0.3);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .profile-card:hover {
+            border-color: var(--deep-red);
+            box-shadow: 0 8px 30px rgba(220, 20, 60, 0.5);
+            transform: translateY(-5px);
         }
 
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            border: 4px solid #667eea;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 3px solid var(--batman-red);
+            margin: 0 auto 20px;
+            display: block;
         }
 
-        .profile-info h2 {
-            color: #333;
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-
-        .username {
-            color: #666;
-            font-size: 1.2rem;
+        .profile-username {
+            color: var(--batman-red);
+            font-size: 1.5rem;
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
-        .bio {
-            color: #555;
-            line-height: 1.5;
-            max-width: 600px;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .repositories-container {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            animation: fadeInUp 0.6s ease 0.2s both;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: #333;
+        .profile-description {
+            color: var(--light-gray);
+            font-size: 1rem;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .repo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-        }
-
-        .repo-card {
-            background: white;
-            border: 1px solid #e1e4e8;
-            border-radius: 15px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .repo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            border-color: #667eea;
-        }
-
-        .repo-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #667eea;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .repo-name:hover {
-            text-decoration: underline;
-        }
-
-        .repo-description {
-            color: #586069;
-            font-size: 0.9rem;
             line-height: 1.4;
-            margin-bottom: 15px;
-            min-height: 40px;
+            min-height: 50px;
         }
 
-        .repo-meta {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 0.8rem;
-            color: #586069;
-        }
-
-        .language {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .language-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .loading {
+        .loading-message {
             text-align: center;
-            padding: 40px;
-            color: white;
+            color: var(--batman-red);
             font-size: 1.2rem;
+            margin: 40px 0;
         }
 
-        .error {
-            background: #ff6b6b;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
+        .error-message {
+            text-align: center;
+            color: var(--deep-red);
+            font-size: 1.1rem;
             margin: 20px 0;
-            text-align: center;
-        }
-
-        .private-note {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-
-        .demo-data {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .demo-profiles {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .demo-card {
-            background: white;
-            border: 2px solid #e1e4e8;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .demo-card:hover {
-            border-color: #667eea;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .demo-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            border: 3px solid #667eea;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .search-box {
-                flex-direction: column;
-            }
-            
-            .profile-header {
-                text-align: center;
-                flex-direction: column;
-            }
-            
-            .repo-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .demo-profiles {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Batman Loading Animation -->
+    <div class="batman-loader" id="loader">
+        <div class="bat-symbol">
+            <div class="wing left-wing"></div>
+            <div class="wing right-wing"></div>
+            <div class="body"></div>
+        </div>
+        <div class="loading-text">Loading GitHub Users...</div>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <div class="container">
         <div class="header">
-            <h1>🚀 GitHub Profile Explorer</h1>
-            <p>Discover GitHub profiles and repositories</p>
+            <h1>GitHub Profiles</h1>
+            <p>Discover real GitHub profiles and repositories</p>
         </div>
 
-        <div class="search-container">
-            <div class="cors-note">
-                <strong>⚠️ CORS Limitation Notice:</strong> Due to browser security restrictions, this app cannot directly access GitHub's API when opened as a local HTML file. 
-                <br><br>
-                <strong>Solutions:</strong>
-                <br>• Click "Open on GitHub" to view profiles directly on GitHub.com
-                <br>• Use a local web server (e.g., <code>python -m http.server</code>)
-                <br>• Host this file on any web server for full functionality
-                <br><br>
-                <strong>Try the demo data below to see how it works!</strong>
-            </div>
-            
-            <div class="search-box">
-                <input type="text" id="usernameInput" placeholder="Enter GitHub username (e.g., octocat)" />
-                <button id="searchBtn">Try API Call</button>
-                <button id="directLinkBtn">Open on GitHub</button>
-            </div>
+        <div class="controls">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search GitHub username...">
+            <button class="btn-batman" onclick="searchUser()">Search User</button>
+            <button class="btn-batman" onclick="loadRandomUsers()">Load Random Users</button>
+            <button class="btn-batman" onclick="loadAllUsers()">Load All Users</button>
         </div>
 
-        <div id="loading" class="loading" style="display: none;">
-            <div>🔍 Attempting to fetch profile...</div>
+        <div id="loadingMessage" class="loading-message" style="display: none;">
+            Fetching users from GitHub API...
         </div>
 
-        <div id="error" class="error" style="display: none;"></div>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-        <div id="profileContainer" class="profile-container">
-            <div class="profile-header">
-                <img id="avatar" class="avatar" src="" alt="User Avatar">
-                <div class="profile-info">
-                    <h2 id="name"></h2>
-                    <div id="username" class="username"></div>
-                    <div id="bio" class="bio"></div>
-                </div>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <span id="publicRepos" class="stat-value">0</span>
-                    <span class="stat-label">Public Repos</span>
-                </div>
-                <div class="stat-item">
-                    <span id="followers" class="stat-value">0</span>
-                    <span class="stat-label">Followers</span>
-                </div>
-                <div class="stat-item">
-                    <span id="following" class="stat-value">0</span>
-                    <span class="stat-label">Following</span>
-                </div>
-                <div class="stat-item">
-                    <span id="joinDate" class="stat-value"></span>
-                    <span class="stat-label">Joined</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="repositoriesContainer" class="repositories-container">
-            <div class="private-note">
-                <strong>Note:</strong> Only public repositories are shown. Private repositories require authentication.
-            </div>
-            
-            <h3 class="section-title">
-                📚 Public Repositories
-                <span id="repoCount" style="font-size: 1rem; color: #666;"></span>
-            </h3>
-            
-            <div id="repoGrid" class="repo-grid"></div>
-        </div>
-
-        <!-- Demo Data Section -->
-        <div class="demo-data">
-            <h2 style="text-align: center; color: #333; margin-bottom: 10px;">🎯 Demo Profiles</h2>
-            <p style="text-align: center; color: #666; margin-bottom: 20px;">Click any profile below to see the interface in action with sample data</p>
-            
-            <div class="demo-profiles">
-                <div class="demo-card" onclick="loadDemoProfile('octocat')">
-                    <img src="https://github.com/octocat.png" alt="Octocat" class="demo-avatar">
-                    <h3>Octocat</h3>
-                    <p style="color: #666; font-size: 0.9rem;">@octocat</p>
-                    <p style="color: #888; font-size: 0.8rem; margin-top: 8px;">GitHub's mascot</p>
-                </div>
-                
-                <div class="demo-card" onclick="loadDemoProfile('torvalds')">
-                    <img src="https://github.com/torvalds.png" alt="Linus Torvalds" class="demo-avatar">
-                    <h3>Linus Torvalds</h3>
-                    <p style="color: #666; font-size: 0.9rem;">@torvalds</p>
-                    <p style="color: #888; font-size: 0.8rem; margin-top: 8px;">Creator of Linux</p>
-                </div>
-                
-                <div class="demo-card" onclick="loadDemoProfile('gaearon')">
-                    <img src="https://github.com/gaearon.png" alt="Dan Abramov" class="demo-avatar">
-                    <h3>Dan Abramov</h3>
-                    <p style="color: #666; font-size: 0.9rem;">@gaearon</p>
-                    <p style="color: #888; font-size: 0.8rem; margin-top: 8px;">React core team</p>
-                </div>
-            </div>
+        <div class="profiles-grid" id="profilesGrid">
+            <!-- Users will be loaded here dynamically -->
         </div>
     </div>
 
     <script>
-        const usernameInput = document.getElementById('usernameInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const directLinkBtn = document.getElementById('directLinkBtn');
-        const loading = document.getElementById('loading');
-        const error = document.getElementById('error');
-        const profileContainer = document.getElementById('profileContainer');
-        const repositoriesContainer = document.getElementById('repositoriesContainer');
+        let currentUsers = [];
+        let currentPage = 1;
 
-        // Language colors mapping
-        const languageColors = {
-            'JavaScript': '#f1e05a',
-            'TypeScript': '#2b7489',
-            'Python': '#3572A5',
-            'Java': '#b07219',
-            'C++': '#f34b7d',
-            'C': '#555555',
-            'C#': '#239120',
-            'PHP': '#4F5D95',
-            'Ruby': '#701516',
-            'Go': '#00ADD8',
-            'Rust': '#dea584',
-            'Swift': '#ffac45',
-            'Kotlin': '#F18E33',
-            'HTML': '#e34c26',
-            'CSS': '#1572B6',
-            'Shell': '#89e051',
-            'Vue': '#2c3e50',
-            'React': '#61dafb'
-        };
-
-        // Demo data for when API calls fail
-        const demoData = {
-            octocat: {
-                user: {
-                    login: 'octocat',
-                    name: 'The Octocat',
-                    avatar_url: 'https://github.com/octocat.png',
-                    bio: 'A passionate developer and GitHub\'s mascot',
-                    public_repos: 8,
-                    followers: 5000,
-                    following: 9,
-                    created_at: '2011-01-25T18:44:36Z'
-                },
-                repos: [
-                    {
-                        name: 'Hello-World',
-                        description: 'My first repository on GitHub!',
-                        html_url: 'https://github.com/octocat/Hello-World',
-                        language: 'JavaScript',
-                        stargazers_count: 1500,
-                        forks_count: 800,
-                        private: false
-                    },
-                    {
-                        name: 'Spoon-Knife',
-                        description: 'This repo is for demonstration purposes only.',
-                        html_url: 'https://github.com/octocat/Spoon-Knife',
-                        language: 'HTML',
-                        stargazers_count: 12000,
-                        forks_count: 140000,
-                        private: false
-                    }
-                ]
-            },
-            torvalds: {
-                user: {
-                    login: 'torvalds',
-                    name: 'Linus Torvalds',
-                    avatar_url: 'https://github.com/torvalds.png',
-                    bio: 'Creator of Linux and Git',
-                    public_repos: 4,
-                    followers: 180000,
-                    following: 0,
-                    created_at: '2011-09-03T15:26:22Z'
-                },
-                repos: [
-                    {
-                        name: 'linux',
-                        description: 'Linux kernel source tree',
-                        html_url: 'https://github.com/torvalds/linux',
-                        language: 'C',
-                        stargazers_count: 180000,
-                        forks_count: 55000,
-                        private: false
-                    }
-                ]
-            },
-            gaearon: {
-                user: {
-                    login: 'gaearon',
-                    name: 'Dan Abramov',
-                    avatar_url: 'https://github.com/gaearon.png',
-                    bio: 'Working on @reactjs. Co-author of Redux and Create React App.',
-                    public_repos: 285,
-                    followers: 95000,
-                    following: 171,
-                    created_at: '2011-10-23T08:40:39Z'
-                },
-                repos: [
-                    {
-                        name: 'redux',
-                        description: 'Predictable state container for JavaScript apps',
-                        html_url: 'https://github.com/reduxjs/redux',
-                        language: 'TypeScript',
-                        stargazers_count: 60500,
-                        forks_count: 15800,
-                        private: false
-                    },
-                    {
-                        name: 'create-react-app',
-                        description: 'Set up a modern web app by running one command.',
-                        html_url: 'https://github.com/facebook/create-react-app',
-                        language: 'JavaScript',
-                        stargazers_count: 102000,
-                        forks_count: 26500,
-                        private: false
-                    }
-                ]
+        // API Functions
+        async function fetchAllUsers(page = 1, perPage = 30) {
+            try {
+                const response = await fetch(`https://api.github.com/users?page=${page}&per_page=${perPage}`);
+                if (response.status === 200) {
+                    return await response.json();
+                }
+                throw new Error(`HTTP ${response.status}`);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                showError('Failed to fetch users from GitHub API');
+                return [];
             }
-        };
+        }
 
-        searchBtn.addEventListener('click', searchUser);
-        directLinkBtn.addEventListener('click', openDirectLink);
-        usernameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') searchUser();
-        });
+        async function fetchUserDetails(username) {
+            try {
+                const response = await fetch(`https://api.github.com/users/${username}`);
+                if (response.status === 200) {
+                    return await response.json();
+                } else if (response.status === 404) {
+                    showError(`User "${username}" not found`);
+                    return null;
+                }
+                throw new Error(`HTTP ${response.status}`);
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+                showError('Failed to fetch user details');
+                return null;
+            }
+        }
+
+        async function fetchMultipleUsers(usernames) {
+            showLoading(true);
+            const promises = usernames.map(username => fetchUserDetails(username));
+            const results = await Promise.all(promises);
+            showLoading(false);
+            return results.filter(user => user !== null);
+        }
+
+        // UI Functions
+        function showLoading(show) {
+            document.getElementById('loadingMessage').style.display = show ? 'block' : 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function displayUsers(users) {
+            const grid = document.getElementById('profilesGrid');
+            grid.innerHTML = '';
+
+            users.forEach(user => {
+                const userCard = createUserCard(user);
+                grid.appendChild(userCard);
+            });
+        }
+
+        function createUserCard(user) {
+            const card = document.createElement('div');
+            card.className = 'profile-card';
+            
+            const bio = user.bio || user.description || 'No bio available';
+            const name = user.name || user.login;
+            
+            card.innerHTML = `
+                <img src="${user.avatar_url}" alt="${user.login}" class="profile-avatar">
+                <div class="profile-username">@${user.login}</div>
+                <div class="profile-description">${bio}</div>
+                <a href="${user.html_url}" target="_blank" class="btn-batman">View Profile</a>
+            `;
+            
+            return card;
+        }
+
+        // Main Functions
+        async function loadAllUsers() {
+            showLoading(true);
+            const users = await fetchAllUsers(currentPage, 30);
+            showLoading(false);
+            
+            if (users.length > 0) {
+                currentUsers = users;
+                displayUsers(users);
+                currentPage++;
+            }
+        }
+
+        async function loadRandomUsers() {
+            showLoading(true);
+            // Get random users by fetching from a random page
+            const randomPage = Math.floor(Math.random() * 100) + 1;
+            const users = await fetchAllUsers(randomPage, 20);
+            showLoading(false);
+            
+            if (users.length > 0) {
+                currentUsers = users;
+                displayUsers(users);
+            }
+        }
 
         async function searchUser() {
-            const username = usernameInput.value.trim();
-            if (!username) return;
-
-            hideAll();
-            loading.style.display = 'block';
-            searchBtn.disabled = true;
-
-            try {
-                // Try to fetch from GitHub API
-                const userResponse = await fetch(`https://api.github.com/users/${username}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/vnd.github+json',
-                    }
-                });
-                
-                if (!userResponse.ok) {
-                    throw new Error(`API Error: ${userResponse.status}`);
-                }
-                
-                const userData = await userResponse.json();
-                const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=50`);
-                const reposData = reposResponse.ok ? await reposResponse.json() : [];
-
-                displayProfile(userData);
-                displayRepositories(reposData);
-
-            } catch (err) {
-                console.error('API call failed:', err);
-                
-                // Check if we have demo data for this user
-                if (demoData[username.toLowerCase()]) {
-                    showError('API call failed due to CORS restrictions. Showing demo data instead.');
-                    loadDemoProfile(username.toLowerCase());
-                } else {
-                    showError('Unable to fetch data due to CORS restrictions. Try the "Open on GitHub" button or use one of the demo profiles below.');
-                }
-            } finally {
-                loading.style.display = 'none';
-                searchBtn.disabled = false;
-            }
-        }
-
-        function openDirectLink() {
-            const username = usernameInput.value.trim();
+            const username = document.getElementById('searchInput').value.trim();
             if (!username) {
-                alert('Please enter a username first');
+                showError('Please enter a username');
                 return;
             }
-            window.open(`https://github.com/${username}`, '_blank');
+
+            showLoading(true);
+            const user = await fetchUserDetails(username);
+            showLoading(false);
+
+            if (user) {
+                currentUsers = [user];
+                displayUsers([user]);
+                document.getElementById('searchInput').value = '';
+            }
         }
 
-        function loadDemoProfile(username) {
-            const data = demoData[username];
-            if (!data) return;
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchUser();
+            }
+        });
 
-            hideAll();
-            displayProfile(data.user);
-            displayRepositories(data.repos);
-            usernameInput.value = username;
-            
-            // Show a note that this is demo data
-            showError('📋 This is demo data to showcase the interface. Real API calls may be blocked by CORS restrictions.', '#28a745');
-        }
-
-        function displayProfile(user) {
-            document.getElementById('avatar').src = user.avatar_url;
-            document.getElementById('name').textContent = user.name || user.login;
-            document.getElementById('username').textContent = `@${user.login}`;
-            document.getElementById('bio').textContent = user.bio || 'No bio available';
-            document.getElementById('publicRepos').textContent = user.public_repos;
-            document.getElementById('followers').textContent = user.followers;
-            document.getElementById('following').textContent = user.following;
-            
-            const joinDate = new Date(user.created_at);
-            document.getElementById('joinDate').textContent = joinDate.getFullYear();
-
-            profileContainer.style.display = 'block';
-        }
-
-        function displayRepositories(repos) {
-            const repoGrid = document.getElementById('repoGrid');
-            const repoCount = document.getElementById('repoCount');
-            
-            repoCount.textContent = `(${repos.length})`;
-            repoGrid.innerHTML = '';
-
-            repos.forEach(repo => {
-                const repoCard = document.createElement('div');
-                repoCard.className = 'repo-card';
-
-                const languageColor = languageColors[repo.language] || '#333';
-
-                repoCard.innerHTML = `
-                    <a href="${repo.html_url}" target="_blank" class="repo-name">${repo.name}</a>
-                    <div class="repo-description">${repo.description || 'No description provided'}</div>
-                    <div class="repo-meta">
-                        ${repo.language ? `
-                            <div class="language">
-                                <div class="language-dot" style="background-color: ${languageColor}"></div>
-                                ${repo.language}
-                            </div>
-                        ` : ''}
-                        <div>⭐ ${repo.stargazers_count}</div>
-                        <div>🍴 ${repo.forks_count}</div>
-                        ${repo.private ? '<div style="color: #f39c12;">🔒 Private</div>' : '<div style="color: #27ae60;">📖 Public</div>'}
-                    </div>
-                `;
-
-                repoGrid.appendChild(repoCard);
-            });
-
-            repositoriesContainer.style.display = 'block';
-        }
-
-        function hideAll() {
-            error.style.display = 'none';
-            profileContainer.style.display = 'none';
-            repositoriesContainer.style.display = 'none';
-        }
-
-        function showError(message, color = '#ff6b6b') {
-            error.textContent = message;
-            error.style.backgroundColor = color;
-            error.style.display = 'block';
-        }
+        // Loading animation control
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                    // Load initial users
+                    loadRandomUsers();
+                }, 500);
+            }, 2000);
+        });
     </script>
 </body>
 </html>
